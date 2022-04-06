@@ -1,5 +1,6 @@
 // ----------------------------------------------------------------
 // ESPECIFICAÇÃO: O programa deve determinar se um identificador
+// aaaa
 // é ou não válido. Um identificador válido deve começar com uma
 // letra e conter apenas letras ou dígitos. Além disto, deve ter
 // no mínimo 1 caractere e no máximo 6 caracteres de comprimento
