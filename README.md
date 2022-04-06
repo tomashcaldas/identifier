@@ -6,7 +6,7 @@ Test results:
 
 [![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](circle-url)
 
-[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](www.google.com)
+[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](https://www.google.com)
 
 Important files:
 
