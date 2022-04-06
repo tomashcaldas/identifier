@@ -4,7 +4,7 @@ Simple Travis example for C using GCC compiler based on the identifier program p
 
 Test results:
 
-[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](circle-url)
+[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)]([circle-url])
 
 [![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](https://www.google.com)
 
