@@ -6,6 +6,8 @@ Test results:
 
 [<img alt="Build Status" src="https://www.travis-ci.com/rafaelgaribotti/travis-identifier.svg?branch=main" height="40">][travis-url]
 
+[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](circle-url)
+
 Important files:
 
 * [identifier.c](identifier.c)
@@ -29,3 +31,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 [travis-url]: https://www.travis-ci.com/rafaelgaribotti/travis-identifier
 [travis-img]: https://www.travis-ci.com/rafaelgaribotti/travis-identifier.svg?branch=master
 [github-follow-url]: https://github.com/rafaelgaribotti
+[circle-url]: https://app.circleci.com/pipelines/github/rafaelgaribotti/travis-identifier
+
+
