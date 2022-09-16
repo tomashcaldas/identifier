@@ -4,10 +4,9 @@ Simple Travis example for C using GCC compiler based on the identifier program p
 
 Test results:
 
-[![rafaelgaribotti](https://circleci.com/gh/rafaelgaribotti/travis-identifier.svg?style=svg)](https://app.circleci.com/pipelines/github/rafaelgaribotti/travis-identifier)
+![status](https://github.com/rafaelgaribotti/travis-identifier/actions/workflows/main.yml/badge.svg)
 
 Important files:
-
 * [identifier.c](identifier.c)
 * [Makefile](Makefile)
 
