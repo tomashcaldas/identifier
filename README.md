@@ -4,7 +4,7 @@ Simple Travis example for C using GCC compiler based on the identifier program p
 
 Test results:
 
-![status](https://github.com/rafaelgaribotti/travis-identifier/actions/workflows/main.yml/badge.svg)
+![status](https://github.com/iacanaw/travis-identifier/actions/workflows/main.yml/badge.svg)
 
 Important files:
 * [identifier.c](identifier.c)
@@ -20,8 +20,8 @@ License
 -------
 MIT License. See [LICENSE](LICENSE) for details.
 
-[main-url]: https://github.com/rafaelgaribotti/travis-identifier
-[readme-url]: https://github.com/rafaelgaribotti/travis-identifier/blob/main/README.md
-[license-url]: https://github.com/rafaelgaribotti/travis-identifier/blob/main/LICENSE
+[main-url]: https://github.com/iacanaw/travis-identifier
+[readme-url]: https://github.com/iacanaw/travis-identifier/blob/main/README.md
+[license-url]: https://github.com/iacanaw/travis-identifier/blob/main/LICENSE
 [license-img]: https://img.shields.io/github/license/rsp/travis-hello-modern-cpp.svg
-[github-follow-url]: https://github.com/rafaelgaribotti
+[github-follow-url]: https://github.com/iacanaw
