@@ -10,12 +10,6 @@ Important files:
 * [identifier.c](identifier.c)
 * [Makefile](Makefile)
 
-
-Author
-------
-[**Rafael Garibotti**](https://br.linkedin.com/in/rafaelgaribotti)
-
-
 License
 -------
 MIT License. See [LICENSE](LICENSE) for details.
@@ -25,3 +19,7 @@ MIT License. See [LICENSE](LICENSE) for details.
 [license-url]: https://github.com/iacanaw/travis-identifier/blob/main/LICENSE
 [license-img]: https://img.shields.io/github/license/rsp/travis-hello-modern-cpp.svg
 [github-follow-url]: https://github.com/iacanaw
+
+Author
+------
+[**Rafael Garibotti**](https://br.linkedin.com/in/rafaelgaribotti)
