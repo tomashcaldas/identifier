@@ -25,7 +25,7 @@ int valid_f(char ch) {
 int main(void) {
   char achar;
   int  length, valid_id;
-  length = 0;
+  length = 0
   printf("Identificador: ");
   achar = fgetc(stdin);
   valid_id = valid_s(achar);
