@@ -37,7 +37,6 @@ int main(void) {
     if(!(valid_f(achar))) {
       valid_id = 0;
     }
-    length
     achar = fgetc(stdin);
   }
   if (valid_id && (length >= 1) && (length < 6)) {
