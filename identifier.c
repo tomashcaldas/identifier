@@ -30,7 +30,7 @@ int main(void) {
   achar = fgetc(stdin);
   valid_id = valid_s(achar);
   if(valid_id) {
-    length = 1
+    length = 1;
   }
   achar = fgetc(stdin);
   while(achar != '\n') {
