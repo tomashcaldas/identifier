@@ -1,50 +1,86 @@
-// ----------------------------------------------------------------
-// ESPECIFICAÇÃO: O programa deve determinar se um identificador
-// aaaa
-// é ou não válido. Um identificador válido deve começar com uma
-// letra e conter apenas letras ou dígitos. Além disto, deve ter
-// no mínimo 1 caractere e no máximo 6 caracteres de comprimento
-// ----------------------------------------------------------------
+//Tomas Haddad Caldas
+//identifier.c -- comissions calculator
+
 
 #include <stdio.h>
 
-int valid_s(char ch) {
-  if (((ch >= 'A') && (ch <= 'Z')) || ((ch >= 'a') && (ch <= 'z')))
-    return 1;
-  else
-    return 0;
-}
-
-int valid_f(char ch) {
-  if (((ch >= 'A') && (ch <= 'Z')) || ((ch >= 'a') && (ch <= 'z')) || ((ch >= '0') && (ch <= '9')))
-    return 1;
-  else
-    return 0;
-}
-
-int main(void) {
-  char achar;
-  int  length, valid_id;
-  length = 0;
-  printf("Identificador: ");
-  achar = fgetc(stdin);
-  valid_id = valid_s(achar);
-  if(valid_id) {
-    length = 1;
-  }
-  achar = fgetc(stdin);
-  while(achar != '\n') {
-    if(!(valid_f(achar))) {
-      valid_id = 0;
+float CalcularComissao(int* vendas) {
+    int total_pas = 0;
+    int total_regadores = 0;
+    int total_vasos = 0;
+    
+    // Processar cada conjunto de vendas
+    for (int i = 0; ; i += 3) {
+        // Verificar se é o marcador de fim de mês
+        if (vendas[i] == -1) {
+            break;
+        }
+        
+        int pas = vendas[i];
+        int regadores = vendas[i+1];
+        int vasos = vendas[i+2];
+        
+        // Validar quantidades
+        if (pas < 1 || pas > 70) {
+            return -1.0f;
+        }
+        if (regadores < 1 || regadores > 80) {
+            return -2.0f;
+        }
+        if (vasos < 1 || vasos > 90) {
+            return -3.0f;
+        }
+        
+        // Acumular totais
+        total_pas += pas;
+        total_regadores += regadores;
+        total_vasos += vasos;
     }
-    achar = fgetc(stdin);
-  }
-  if (valid_id && (length >= 1) && (length < 6)) {
-    printf("Valido\n");
+    
+    // Verificar se vendeu pelo menos uma unidade de cada produto
+    if (total_pas == 0 || total_regadores == 0 || total_vasos == 0) {
+        // Pode retornar um código de erro específico ou considerar inválido
+        // Como o enunciado diz que precisa vender pelo menos 1 de cada,
+        // mas não especifica o código de erro, vou considerar como erro de pás
+        return -1.0f;
+    }
+    
+    // Calcular valor total das vendas
+    float valor_total = total_pas * 45.0f + total_regadores * 30.0f + total_vasos * 25.0f;
+    
+    // Calcular comissão por faixas
+    float comissao = 0.0f;
+    
+    if (valor_total <= 1000.0f) {
+        comissao = valor_total * 0.10f;
+    } else if (valor_total <= 1800.0f) {
+        comissao = 1000.0f * 0.10f + (valor_total - 1000.0f) * 0.15f;
+    } else {
+        comissao = 1000.0f * 0.10f + 800.0f * 0.15f + (valor_total - 1800.0f) * 0.20f;
+    }
+    
+    return comissao;
+}
+
+// Função para testar o programa (não faz parte da especificação)
+int main() {
+    // Exemplo de uso:
+    int vendas_mes[] = {
+        5, 3, 4,    // 1ª cidade: 5 pás, 3 regadores, 4 vasos
+        10, 8, 12,  // 2ª cidade: 10 pás, 8 regadores, 12 vasos
+        -1, 0, 0     // Fim do mês
+    };
+    
+    float comissao = CalcularComissao(vendas_mes);
+    
+    if (comissao >= 0) {
+        printf("Comissão do vendedor: R$ %.2f\n", comissao);
+    } else {
+        printf("Erro no cálculo da comissão: ");
+        if (comissao == -1.0f) printf("Quantidade de pás inválida\n");
+        else if (comissao == -2.0f) printf("Quantidade de regadores inválida\n");
+        else if (comissao == -3.0f) printf("Quantidade de vasos inválida\n");
+    }
+    
     return 0;
-  }
-  else {
-    printf("Invalido\n");
-    return 1;
-  }
 }
