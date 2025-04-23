@@ -70,11 +70,11 @@ jobs:
         mkdir -p test-results
         mv coverage.info test-results/
         
-    # - name: Upload artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: test-results-${{ github.run_number }}
-    #     path: |
-    #       Unity/examples/comissions/test-results/*
-    #       Unity/examples/comissions/*.gcov
-    #     retention-days: 7
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ github.run_number }}
+        path: |
+          Unity/examples/comissions/test-results/*
+          Unity/examples/comissions/*.gcov
+        retention-days: 7
