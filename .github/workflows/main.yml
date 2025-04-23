@@ -52,23 +52,23 @@ jobs:
         mkdir -p test-results
         ./comission_tests
         
-    - name: Process coverage with lcov only
-      working-directory: Unity/examples/comissions
-      run: |
-        # Generate lcov report
-        lcov --capture --directory . --output-file test-results/lcov.info
-        lcov --remove test-results/lcov.info '/usr/*' --output-file test-results/lcov-filtered.info
-        genhtml test-results/lcov-filtered.info --output-directory test-results/coverage-html
+    # - name: Process coverage with lcov only
+    #   working-directory: Unity/examples/comissions
+    #   run: |
+    #     # Generate lcov report
+    #     lcov --capture --directory . --output-file test-results/lcov.info
+    #     lcov --remove test-results/lcov.info '/usr/*' --output-file test-results/lcov-filtered.info
+    #     genhtml test-results/lcov-filtered.info --output-directory test-results/coverage-html
         
-    - name: Upload coverage reports
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-reports
-        path: |
-          Unity/examples/comissions/test-results/lcov.info
-          Unity/examples/comissions/test-results/lcov-filtered.info
-          Unity/examples/comissions/test-results/coverage-html/
-        retention-days: 7
+    # - name: Upload coverage reports
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: coverage-reports
+    #     path: |
+    #       Unity/examples/comissions/test-results/lcov.info
+    #       Unity/examples/comissions/test-results/lcov-filtered.info
+    #       Unity/examples/comissions/test-results/coverage-html/
+    #     retention-days: 7
         
     - name: Run Valgrind checks
       working-directory: Unity/examples/comissions
