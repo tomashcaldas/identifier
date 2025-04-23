@@ -4,7 +4,9 @@ UNITY_DIR = ../../../Unity
 SRC_DIR = src
 TEST_DIR = test
 
-CFLAGS = -std=c99 -Wall -Wextra -Werror -fsanitize=address -g
+GCOV_FLAGS = -fprofile-arcs -ftest-coverage
+
+CFLAGS = -std=c99 -Wall -Wextra -Werror -fsanitize=address -g $(GCOV_FLAGS)
 INC_DIRS = -I$(SRC_DIR) -I$(UNITY_DIR)/src
 
 SRC_FILES = \

@@ -73,14 +73,30 @@ jobs:
           --error-exitcode=1 \
           ./comission_tests
         
-    - name: Generate coverage
+    - name: Build with coverage
+      working-directory: Unity/examples/comissions
+      run: |
+        make clean
+        make CC=gcc CFLAGS="-g -Wall -Wextra -fprofile-arcs -ftest-coverage"
+
+    - name: Run tests for coverage
+      working-directory: Unity/examples/comissions
+      run: |
+        ./comission_tests
+
+    - name: Generate coverage report
       working-directory: Unity/examples/comissions
       run: |
         gcov src/comissao.c
-        lcov --capture --directory . --output-file coverage.info
-        lcov --remove coverage.info '/usr/*' --output-file coverage.info
-        mkdir -p test-results
-        mv coverage.info test-results/
+        mkdir -p coverage-report
+        lcov --capture --directory . --output-file coverage-report/lcov.info
+        genhtml coverage-report/lcov.info --output-directory coverage-report/html
+
+    - name: Upload coverage
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: Unity/examples/comissions/coverage-report
         
     - name: Upload test results
       uses: actions/upload-artifact@v4  # Updated to v4
