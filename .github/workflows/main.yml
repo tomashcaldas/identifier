@@ -11,5 +11,63 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: make
-      run: "make clean; make"
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          cppcheck \
+          valgrind \
+          gcc \
+          build-essential
+        
+    - name: Build with Make
+      run: |
+        make clean
+        make
+        
+    - name: Run cppcheck (static analysis)
+      run: |
+        cppcheck \
+          --enable=all \
+          --suppress=missingIncludeSystem \
+          --error-exitcode=1 \
+          --inline-suppr \
+          --force \
+          Unity/examples/comission/src/
+        
+    - name: Run Valgrind (memory leak check)
+      run: |
+        valgrind \
+          --leak-check=full \
+          --show-leak-kinds=all \
+          --track-origins=yes \
+          --error-exitcode=1 \
+          ./comission_tests
+      
+    - name: Run tests with Address Sanitizer
+      run: |
+        ./comission_tests
+    
+    - name: Run tests and generate reports
+      run: |
+        make test-report
+        make valgrind-report
+        make coverage-report
+        
+    - name: Store test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ github.run_id }}
+        path: |
+          test-results/*
+        if-no-files-found: error
+        retention-days: 7
+
+    # - name: Upload all results
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: test-results-${{ github.run_id }}
+    #     path: |
+    #       test-results/*
+    #     retention-days: 7
