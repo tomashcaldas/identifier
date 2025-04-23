@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+  actions: write  # Required for uploading artifacts
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -23,7 +27,7 @@ jobs:
           cppcheck \
           valgrind \
           lcov \
-          ruby  # Needed for test runner generation
+          ruby
         
     - name: Generate test runners
       working-directory: Unity/examples/comissions
@@ -70,11 +74,11 @@ jobs:
         mkdir -p test-results
         mv coverage.info test-results/
         
-    - name: Upload artifacts
+    - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
         name: test-results-${{ github.run_number }}
         path: |
-          Unity/examples/comissions/test-results/*
-          Unity/examples/comissions/*.gcov
+          Unity/examples/comissions/test-results/coverage.info
+          Unity/examples/comissions/src/comissao.c.gcov
         retention-days: 7
