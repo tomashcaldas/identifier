@@ -35,6 +35,39 @@ jobs:
       run: |
         ruby ../../auto/generate_test_runner.rb test/test_comissao.c test/test_runners/test_comissao_runner.c
         
+    - name: Build with coverage instrumentation
+      working-directory: Unity/examples/comissions
+      run: |
+        make clean
+        # Explicitly set coverage flags
+        make CC=gcc CFLAGS="-g -Wall -Wextra -fprofile-arcs -ftest-coverage"
+        
+    - name: Run tests to generate coverage data
+      working-directory: Unity/examples/comissions
+      run: |
+        # Ensure the test-results directory exists
+        mkdir -p test-results
+        # Run tests to generate .gcda files
+        ./comission_tests
+        
+    - name: Generate coverage reports
+      working-directory: Unity/examples/comissions
+      run: |
+        # Process coverage data
+        gcov -o . src/comissao.c
+        lcov --capture --directory . --output-file test-results/lcov.info
+        lcov --remove test-results/lcov.info '/usr/*' --output-file test-results/lcov-filtered.info
+        genhtml test-results/lcov-filtered.info --output-directory test-results/coverage-html
+        gcovr --root . --xml --output=test-results/coverage.xml
+        
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-${{ github.run_number }}
+        path: |
+          Unity/examples/comissions/test-results/
+        retention-days: 7
+        
     - name: Build for Valgrind
       working-directory: Unity/examples/comissions
       run: |
@@ -51,39 +84,6 @@ jobs:
           --error-exitcode=1 \
           ./comission_tests
         
-    - name: Build with coverage
-      working-directory: Unity/examples/comissions
-      run: |
-        make clean
-        make CC=gcc CFLAGS="-g -Wall -Wextra -fprofile-arcs -ftest-coverage"
-        
-    - name: Run tests with coverage
-      working-directory: Unity/examples/comissions
-      run: |
-        ./comission_tests
-        
-    - name: Generate coverage reports
-      working-directory: Unity/examples/comissions
-      run: |
-        mkdir -p test-results
-        # Generate gcov report
-        gcov src/comissao.c
-        # Generate lcov report
-        lcov --capture --directory . --output-file test-results/lcov.info
-        lcov --remove test-results/lcov.info '/usr/*' --output-file test-results/lcov-filtered.info
-        # Generate HTML report
-        genhtml test-results/lcov-filtered.info --output-directory test-results/coverage-html
-        # Generate gcovr report
-        gcovr --xml-pretty --root . --output test-results/coverage.xml
-        
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results-${{ github.run_number }}
-        path: |
-          Unity/examples/comissions/test-results/
-        retention-days: 7
-        
     - name: Run static analysis
       working-directory: Unity/examples/comissions
       run: |
@@ -95,5 +95,4 @@ jobs:
           --error-exitcode=1 \
           -I src/ \
           -I ../../src/ \
-          src/ \
-        || echo "Cppcheck completed (warnings treated as errors)"
+          src/
