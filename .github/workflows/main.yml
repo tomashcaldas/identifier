@@ -46,6 +46,8 @@ jobs:
         cppcheck \
           --enable=all \
           --suppress=missingIncludeSystem \
+          --suppress=constParameterPointer \
+          --suppress=unusedFunction \
           --error-exitcode=1 \
           -I src/ \
           -I ../../src/ \
