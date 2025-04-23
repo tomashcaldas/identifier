@@ -75,10 +75,11 @@ jobs:
         mv coverage.info test-results/
         
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
-        name: test-results-${{ github.run_number }}
+        name: test-results
         path: |
-          Unity/examples/comissions/test-results/coverage.info
-          Unity/examples/comissions/src/comissao.c.gcov
-        retention-days: 7
+          Unity/examples/comissions/test-results/*
+          Unity/examples/comissions/*.gcov
+        if-no-files-found: warn
+        retention-days: 5
