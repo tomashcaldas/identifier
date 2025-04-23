@@ -22,28 +22,37 @@ jobs:
           gcc \
           cppcheck \
           valgrind \
-          lcov
+          lcov \
+          ruby  # Needed for test runner generation
+        
+    - name: Generate test runners
+      working-directory: Unity/examples/comissions
+      run: |
+        ruby ../../auto/generate_test_runner.rb test/test_comissao.c test/test_runners/test_comissao_runner.c
         
     - name: Build project
+      working-directory: Unity/examples/comissions
       run: |
         make clean
         make
         
-    - name: Run static analysis (cppcheck)
+    - name: Run static analysis
+      working-directory: Unity/examples/comissions
       run: |
         cppcheck \
           --enable=all \
           --suppress=missingIncludeSystem \
           --error-exitcode=1 \
-          --inline-suppr \
-          --force \
+          --includes-file=includes.txt \
           src/
         
     - name: Run unit tests
+      working-directory: Unity/examples/comissions
       run: |
         ./comission_tests
         
-    - name: Run memory checks (Valgrind)
+    - name: Run memory checks
+      working-directory: Unity/examples/comissions
       run: |
         valgrind \
           --leak-check=full \
@@ -52,17 +61,20 @@ jobs:
           --error-exitcode=1 \
           ./comission_tests
         
-    - name: Generate coverage report
+    - name: Generate coverage
+      working-directory: Unity/examples/comissions
       run: |
+        gcov src/comissao.c
         lcov --capture --directory . --output-file coverage.info
         lcov --remove coverage.info '/usr/*' --output-file coverage.info
-        genhtml coverage.info --output-directory coverage-report
+        mkdir -p test-results
+        mv coverage.info test-results/
         
-    - name: Upload test artifacts
+    - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: test-results-${{ github.run_number }}
         path: |
-          coverage.info
-          coverage-report/
+          Unity/examples/comissions/test-results/*
+          Unity/examples/comissions/*.gcov
         retention-days: 7
