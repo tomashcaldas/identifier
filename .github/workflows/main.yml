@@ -47,7 +47,8 @@ jobs:
           --enable=all \
           --suppress=missingIncludeSystem \
           --error-exitcode=1 \
-          --includes-file=includes.txt \
+          -I src/ \
+          -I ../../src/ \
           src/
         
     - name: Run unit tests
