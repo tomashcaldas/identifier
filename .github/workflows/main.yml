@@ -18,12 +18,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Install dependencies
+    - name: Set up GCC
       run: |
         sudo apt-get update
+        sudo apt-get install -y gcc-9 g++-9
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90
+    
+    - name: Install dependencies
+      run: |
         sudo apt-get install -y \
           build-essential \
-          gcc \
           cppcheck \
           valgrind \
           lcov \
@@ -35,48 +40,50 @@ jobs:
       run: |
         ruby ../../auto/generate_test_runner.rb test/test_comissao.c test/test_runners/test_comissao_runner.c
         
-    - name: Build with coverage instrumentation
+    - name: Build with coverage
       working-directory: Unity/examples/comissions
       run: |
         make clean
-        # Explicitly set coverage flags
         make CC=gcc CFLAGS="-g -Wall -Wextra -fprofile-arcs -ftest-coverage"
         
-    - name: Run tests to generate coverage data
+    - name: Run tests
       working-directory: Unity/examples/comissions
       run: |
-        # Ensure the test-results directory exists
         mkdir -p test-results
-        # Run tests to generate .gcda files
         ./comission_tests
         
-    - name: Generate coverage reports
+    - name: Process coverage data
       working-directory: Unity/examples/comissions
       run: |
-        # Process coverage data
-        gcov -o . src/comissao.c
+        # Fix permissions on gcda files
+        find . -name "*.gcda" -exec chmod 664 {} \;
+        
+        # Generate reports using gcovr instead of gcov
+        gcovr --root . \
+          --exclude-unreachable-branches \
+          --exclude-throw-branches \
+          --xml --output=test-results/coverage.xml \
+          --html --html-details --output=test-results/coverage.html
+        
+        # Generate lcov report
         lcov --capture --directory . --output-file test-results/lcov.info
         lcov --remove test-results/lcov.info '/usr/*' --output-file test-results/lcov-filtered.info
-        genhtml test-results/lcov-filtered.info --output-directory test-results/coverage-html
-        gcovr --root . --xml --output=test-results/coverage.xml
         
-    - name: Upload coverage artifacts
+    - name: Upload coverage reports
       uses: actions/upload-artifact@v4
       with:
-        name: coverage-report-${{ github.run_number }}
+        name: coverage-reports
         path: |
-          Unity/examples/comissions/test-results/
+          Unity/examples/comissions/test-results/coverage.xml
+          Unity/examples/comissions/test-results/coverage.html
+          Unity/examples/comissions/test-results/lcov-filtered.info
         retention-days: 7
-        
-    - name: Build for Valgrind
-      working-directory: Unity/examples/comissions
-      run: |
-        make clean
-        make CC=gcc CFLAGS="-g -Wall -Wextra"
         
     - name: Run Valgrind checks
       working-directory: Unity/examples/comissions
       run: |
+        make clean
+        make CC=gcc CFLAGS="-g -Wall -Wextra"
         valgrind \
           --leak-check=full \
           --show-leak-kinds=all \
