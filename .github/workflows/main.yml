@@ -58,9 +58,14 @@ jobs:
       run: |
         ./comission_tests
         
-    - name: Run memory checks
+    - name: Run memory checks (Valgrind)
       working-directory: Unity/examples/comissions
       run: |
+        # Rebuild without ASan for Valgrind
+        make clean
+        make CC=gcc CFLAGS="-g -Wall -Wextra"  # Remove -fsanitize=address
+    
+        # Run Valgrind
         valgrind \
           --leak-check=full \
           --show-leak-kinds=all \
