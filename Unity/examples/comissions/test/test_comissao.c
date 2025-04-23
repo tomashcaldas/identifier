@@ -111,7 +111,7 @@ void test_commission_tier1(void) {
 // EC6: Middle commission tier 
 void test_commission_tier2(void) {
     int vendas[] = {15, 15, 15, -1, 0, 0}; // 1500 total (100 + 500*0.15)
-    TEST_ASSERT_EQUAL_FLOAT(185.0f, CalcularComissao(vendas));
+    TEST_ASSERT_EQUAL_FLOAT(175.0f, CalcularComissao(vendas));
 }
 
 // EC7: High commission tier
